@@ -1,4 +1,3 @@
-include my_nektool/my_nektool.LICENSE
-include my_nektool/my_nektool.CITATION
-include my_nektool/my_nektool.VERSION
+include LICENSE
+include my_nektool/VERSION
 recursive-include my_nektool *
