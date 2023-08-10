@@ -18,13 +18,13 @@ def nek_base(rel_path):
 
 
 def get_version():
-    with open(nek_base("my_nektool.VERSION"), "r") as f:
+    with open(nek_base("VERSION"), "r") as f:
         version = f.readline()
     return version
 
 
 def print_citation():
-    with open(nek_base("my_nektool.CITATION"), "r") as f:
+    with open(nek_base("CITATION"), "r") as f:
         for line in f:
             click.echo(line, nl=False, err=True)
 
