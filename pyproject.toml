@@ -49,10 +49,10 @@ test = [
 my_nektool = "my_nektool.__main__:main"
 
 [project.urls]
-Homepage = "https://example.com"
-Documentation = "https://example.com"
-Repository = "https://example.com"
-Changelog = "https://example.com"
+Homepage = "https://ccbr.github.io/nf-sandbox"
+Documentation = "https://ccbr.github.io/nf-sandbox"
+Repository = "https://github.com/CCBR/nf-sandbox"
+Changelog = "https://github.com/CCBR/nf-sandbox/blob/main/CHANGELOG.md"
 
 [tools.setuptools]
 packages = ["my_nektool"]
