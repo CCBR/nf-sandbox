@@ -13,11 +13,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - uses: actions/checkout@v3
       - uses: pietrobolcato/action-read-yaml@1.1.0
         id: metadata
         with:
-          config: ${{ github.workspace }}/.github/user-kanbans.yml
+          config: https://raw.githubusercontent.com/CCBR/nf-sandbox/master/.github/user-kanbans.yml
 
       - name: echo
         run: |
