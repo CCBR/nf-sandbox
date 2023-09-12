@@ -1,0 +1,24 @@
+name: Add to personal projects
+
+on:
+  issues:
+    types:
+      - assigned
+  pull_requests:
+    types:
+      - assigned
+
+jobs:
+  add-to-project
+    runs-on: ubuntu-latest
+    steps:
+      #- uses: actions/add-to-project@0.5.0
+      #  with:
+          # You can target a project in a different organization
+          # to the issue
+      #    project-url: https://github.com/orgs/CCBR/projects/25
+      #    github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+      - name: echo
+        run: |
+          echo "${{ github.event.assignee }}"
+        
