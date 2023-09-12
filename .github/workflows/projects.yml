@@ -12,11 +12,14 @@ jobs:
   add-to-project:
     runs-on: ubuntu-latest
     steps:
+      - name: download yaml
+        run: |
+          wget https://raw.githubusercontent.com/CCBR/nf-sandbox/master/.github/user-kanbans.yml
 
       - uses: pietrobolcato/action-read-yaml@1.1.0
         id: metadata
         with:
-          config: https://raw.githubusercontent.com/CCBR/nf-sandbox/master/.github/user-kanbans.yml
+          config: user-kanbans.yml
 
       - name: echo
         run: |
