@@ -12,21 +12,6 @@ jobs:
   add-to-project:
     runs-on: ubuntu-latest
     steps:
-      - name: download yaml
-        run: |
-          wget https://raw.githubusercontent.com/CCBR/nf-sandbox/master/.github/user-kanbans.yml
-
-      - uses: pietrobolcato/action-read-yaml@1.1.0
-        id: metadata
+      - uses: CCBR/nf-sandbox/.github/workflows/auto-add-user-project.yml
         with:
-          config: user-kanbans.yml
-
-      - name: echo
-        run: |
-          echo ${{ github.event.assignee.login }} ${{ steps.metadata.outputs[github.event.assignee.login] }}
-          
-      - uses: actions/add-to-project@v0.5.0
-        if: ${{ steps.metadata.outputs[github.event.assignee.login] != '' }}
-        with:
-          project-url: ${{ steps.metadata.outputs[github.event.assignee.login] }}
-          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          assignee: ${{ github.event.assignee.login }}
