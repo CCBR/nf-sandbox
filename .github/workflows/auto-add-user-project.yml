@@ -6,6 +6,9 @@ on:
       username:
         required: true
         type: string
+    secrets:
+      ADD_TO_PROJECT_PAT:
+        required: true
 
 jobs:
   add-to-project:
