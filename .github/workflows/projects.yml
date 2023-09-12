@@ -10,8 +10,6 @@ on:
 
 jobs:
   add-to-project:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: CCBR/nf-sandbox/.github/workflows/auto-add-user-project.yml@master
-        with:
-          username: ${{ github.event.assignee.login }}
+    uses: CCBR/nf-sandbox/.github/workflows/auto-add-user-project.yml@master
+    with:
+      username: ${{ github.event.assignee.login }}
