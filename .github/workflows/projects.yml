@@ -12,10 +12,12 @@ jobs:
   add-to-project:
     runs-on: ubuntu-latest
     steps:
+
+      - uses: actions/checkout@v3
       - uses: pietrobolcato/action-read-yaml@1.0.0
         id: metadata
         with:
-          config: .github/user-kanbans.yml
+          config: ${{ github.workspace }}/.github/user-kanbans.yml
 
       - name: echo
         run: |
