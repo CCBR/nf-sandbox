@@ -49,11 +49,25 @@ WorkflowMain.initialise(workflow, params, log)
 
 include { SANDBOX } from './workflows/sandbox'
 
+process DEBUG_CACHE_DIR {
+    container 'nciccbr/ccbr_ubuntu_base_20.04:latest'
+
+    output:
+        path("output.txt")
+
+    script:
+    """
+    uname -a >> output.txt
+    #echo \$SINGULARITY_CACHEDIR >> output.txt
+    """
+}
+
 //
 // WORKFLOW: Run main ccbr/sandbox analysis pipeline
 //
 workflow CCBR_SANDBOX {
-    SANDBOX ()
+    DEBUG_CACHE_DIR()
+    //SANDBOX ()
 }
 
 /*
