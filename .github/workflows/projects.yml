@@ -19,7 +19,7 @@ jobs:
 
       - name: echo
         run: |
-          echo "proj ${{ steps.metadata.outputs['github.event.assignee.login'] }}"
+          echo "proj ${{ steps.metadata.outputs[github.event.assignee.login] }}"
           echo "login ${{ github.event.assignee.login }}"
           echo "yaml ${{ steps.metadata.outputs }}"
           
