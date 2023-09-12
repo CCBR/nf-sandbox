@@ -20,5 +20,5 @@ jobs:
       #    github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
       - name: echo
         run: |
-          echo "${{ github.event.assignee }}"
+          echo "${{ github.event.assignee.login }}"
         
