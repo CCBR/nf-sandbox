@@ -1,4 +1,4 @@
-name: Add to personal projects
+name: Add issues/PRs to user projects
 
 on:
   issues:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   add-to-project:
-    uses: CCBR/nf-sandbox/.github/workflows/auto-add-user-project.yml@master
+    uses: CCBR/.github/.github/workflows/auto-add-user-project.yml@reusable-workflows
     with:
       username: ${{ github.event.assignee.login }}
     secrets: inherit
