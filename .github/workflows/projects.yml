@@ -22,6 +22,7 @@ jobs:
           echo "proj ${{ steps.metadata.outputs[github.event.assignee.login] }}"
           echo "login ${{ github.event.assignee.login }}"
           echo "kelly-sovacool ${{ steps.metadata.outputs['kelly-sovacool'] }}"
+          echo "foo ${{ steps.metadata.outputs['foo'] }}"
           
       #- uses: actions/add-to-project@0.5.0
         #with:
