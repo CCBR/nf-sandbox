@@ -21,15 +21,9 @@ jobs:
 
       - name: echo
         run: |
-          echo proj ${{ steps.metadata.outputs[github.event.assignee.login] }}
-          echo login ${{ github.event.assignee.login }}
-          echo kelly-sovacool ${{ steps.metadata.outputs['kelly-sovacool'] }}
-          echo foo ${{ steps.metadata.outputs['foo'] }}
+          echo ${{ github.event.assignee.login }} ${{ steps.metadata.outputs[github.event.assignee.login] }}
           
-      #- uses: actions/add-to-project@0.5.0
-        #with:
-          # You can target a project in a different organization
-          # to the issue
-          #project-url: https://github.com/orgs/CCBR/projects/25
-          #github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-        
+      - uses: actions/add-to-project@0.5.0
+        with:
+          project-url: ${{ steps.metadata.outputs[github.event.assignee.login] }}
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
