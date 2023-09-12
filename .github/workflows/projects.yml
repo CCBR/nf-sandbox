@@ -10,7 +10,7 @@ on:
 
 jobs:
   add-to-project:
-    uses: ./.github/workflows/auto-add-user-project.yml
+    uses: CCBR/nf-sandbox/.github/workflows/auto-add-user-project.yml@master
     with:
       username: ${{ github.event.assignee.login }}
-      secrets: inherit
+    secrets: inherit
