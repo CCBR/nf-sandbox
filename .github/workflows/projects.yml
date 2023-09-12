@@ -14,7 +14,7 @@ jobs:
     steps:
 
       - uses: actions/checkout@v3
-      - uses: pietrobolcato/action-read-yaml@v1.0.0
+      - uses: pietrobolcato/action-read-yaml@v1.1.0
         id: metadata
         with:
           config: ${{ github.workspace }}/.github/user-kanbans.yml
@@ -23,7 +23,7 @@ jobs:
         run: |
           echo ${{ github.event.assignee.login }} ${{ steps.metadata.outputs[github.event.assignee.login] }}
           
-      - uses: actions/add-to-project@0.5.0
+      - uses: actions/add-to-project@v0.5.0
         with:
           project-url: ${{ steps.metadata.outputs[github.event.assignee.login] }}
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
