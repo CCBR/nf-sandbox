@@ -21,7 +21,7 @@ jobs:
         run: |
           echo "proj ${{ steps.metadata.outputs[github.event.assignee.login] }}"
           echo "login ${{ github.event.assignee.login }}"
-          echo "yaml ${{ steps.metadata.outputs }}"
+          echo "kelly-sovacool ${{ steps.metadata.outputs['kelly-sovacool'] }}"
           
       #- uses: actions/add-to-project@0.5.0
         #with:
