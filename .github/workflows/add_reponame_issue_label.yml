@@ -5,9 +5,6 @@ on:
   issues:
   pull_request:
 
-env:
-  GH_TOKEN: ${{ secrets.ADD_TO_PROJECT_PAT }}
-
 jobs:
 
   add-label:
@@ -19,15 +16,10 @@ jobs:
 
     steps:
 
-      - name: checkout repo
-        uses: actions/checkout@v4
-        with:
-          ref: 'main'
-          token: ${{ secrets.ADD_TO_PROJECT_PAT }}
-
       - name: add label
         uses: actions/github-script@v6
         with:
+          github-token: ${{ secrets.MY_PAT }}
           script: |
             try {
               const response = await github.rest.issues.createLabel({
