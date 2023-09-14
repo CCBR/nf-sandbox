@@ -1,19 +1,12 @@
 name: Add repo name to issue label
 
 on:
-  workflow_dispatch:
   issues:
   pull_request:
 
 jobs:
-
   add-label:
-
     runs-on: ubuntu-latest
-
-    permissions:
-      issues: write
-
     steps:
 
       - name: add label
