@@ -19,7 +19,7 @@ jobs:
       - name: add label
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.MY_PAT }}
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
           script: |
             try {
               const response = await github.rest.issues.createLabel({
