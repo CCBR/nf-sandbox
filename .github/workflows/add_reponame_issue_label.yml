@@ -1,7 +1,7 @@
 name: Add repo name to issue label
 
-# on:
-#   workflow_dispatch:
+on:
+   workflow_dispatch:
 
 on:
   issues:
