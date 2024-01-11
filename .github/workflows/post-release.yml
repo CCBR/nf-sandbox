@@ -29,21 +29,14 @@ jobs:
           with open('VERSION', 'w') as outfile:
             outfile.write(f"{version}-dev\n")
 
-          with open('pr-body.md', 'w') as outfile:
-            outfile.writelines('\n'.join([
-              '## Changes',
-              ' - Bump the version in `VERSION`',
-              ' - Prepend `CHANGELOG.md` with the next dev header'
-            ]))
-
       - name: Open pull request
         run: |
           git add CHANGELOG.md VERSION
-          git commit -m "chore: bump changelog & version"
+          git commit -m "chore: bump changelog & version after release of ${{ github.ref_name }}"
 
           gh pr create \
-            --body-file pr-body.md \
-            --title "chore: bump changelog & version after release of ${{ github.ref_name }}"
+            --base main \
+            --fill
 
 
 
