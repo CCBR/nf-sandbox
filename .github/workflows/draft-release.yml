@@ -1,0 +1,38 @@
+name: draft-release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  draft-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+      - name: Detect latest version
+        run: |
+          echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_ENV"
+          echo "LATEST_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
+          echo TODO
+      - name: Select next version
+        run: |
+          echo TODO
+      - name: Update changelog
+        run: |
+          import os
+          print("${{ env.DOCKER_IMAGE_TAG }}")
+          print(os.getenv('GITHUB_ENV'))
+          lines = list()
+          with open("CHANGELOG.md", "r") as infile:
+            lines = infile.readlines()
+
+        shell: python {0}
+      - name: Update citation.cff
+        run: |
+          echo TODO
+      - name: Tag & draft release
+        run: |
+          echo TODO
+      - name: Push to branch
+        run: |
+          echo TODO
