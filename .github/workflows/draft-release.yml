@@ -76,7 +76,7 @@ jobs:
 
           git add CITATION.cff CHANGELOG.md
           git commit -m 'chore: prepare release ${{ steps.semver.outputs.next }}'
-          git push
+          git push --set-upstream origin
 
       - name: Tag & draft release
         uses: actions/create-release@v1
