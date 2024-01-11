@@ -71,6 +71,7 @@ jobs:
           git switch -c release/${{ steps.semver.outputs.next }}
           git add CITATION.cff CHANGELOG.md
           git commit -m 'chore: prepare release ${{ steps.semver.outputs.next }}' || echo "No changes to commit"
+          git push
 
       - name: Tag & draft release
         uses: actions/create-release@v1
@@ -83,4 +84,4 @@ jobs:
           body_path: .github/latest-release.md
       - name: Next steps
         run: |
-          echo "Next steps: \n - Take a look at the changes in `release/${{ steps.semver.outputs.next }}`\n - If everything is correct, publish the draft release"
+          echo "Next steps: Take a look at the changes in release/${{ steps.semver.outputs.next }}. If everything is correct, publish the draft release."
