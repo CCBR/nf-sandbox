@@ -2,6 +2,9 @@ name: draft-release
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/draft-release.yml
 
 jobs:
   draft-release:
