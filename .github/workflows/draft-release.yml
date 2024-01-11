@@ -13,7 +13,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # required to include tags
-      #- uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      - run: pip install cffconvert>=2.0.0
       - name: Get Date
         run: |
           echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_ENV"
@@ -45,12 +49,17 @@ jobs:
           with open(".github/latest-release.md", "w") as outfile:
             outfile.write(release_notes)
         shell: python {0}
+
       - name: Update citation file
         run: |
-          echo TODO
+          from cffconvert.cli.create_citation import create_citation
+          from cffconvert.cli.validate_or_write_output import validate_or_write_output
+          citation = create_citation('CITATION.cff', None)
+          citation._implementation.cffobj['version'] = "${{ steps.semver.outputs.next }}"
+          citation._implementation.cffobj['date-released'] = "${{ env.DATE }}"
+          validate_or_write_output("CITATION.cff", 'cff', False, citation)
+        shell: python {0}
+
       - name: Tag & draft release
         run: |
           echo ${{ env.RELEASE_NOTES }}
-      - name: Commit & push to branch
-        run: |
-          echo TODO
