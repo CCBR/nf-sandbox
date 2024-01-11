@@ -21,36 +21,40 @@ jobs:
       - name: Get Date
         run: |
           echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_ENV"
-          echo "LATEST_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
       - name: Get current and next versions
         id: semver
         uses: ietf-tools/semver-action@v1
         with:
           token: ${{ github.token }}
           branch: ${{ github.ref_name }}
-      - name: Select next version
-        run: |
-          echo ${{ steps.semver.outputs.next }}
-      - name: Update changelog
+
+      - name: Get release notes from changelog
+        shell: python {0}
         run: |
           import os
           latest_version = "${{ steps.semver.outputs.current }}".strip('v')
           next_version = "${{ steps.semver.outputs.next }}".strip('v')
-          lines = list()
+          changelog_lines = list()
+          next_release_lines = list()
+          for_next = True
           with open("CHANGELOG.md", "r") as infile:
             for line in infile:
-              if latest_version in line:
-                break
-              elif line.startswith('#') and 'development version' in line:
-                lines.append(line.replace('development version', next_version))
-              else:
-                lines.append(line)
-          release_notes = ''.join(lines)
+              if line.startswith('#') and 'development version' in line:
+                line = line.replace('development version', next_version)
+              elif latest_version in line:
+                for_next = False
+
+              changelog_lines.append(line)
+              if for_next:
+                next_release_lines.append(line)
+
           with open(".github/latest-release.md", "w") as outfile:
-            outfile.write(release_notes)
-        shell: python {0}
+            outfile.write(''.join(next_release_lines))
+          with open('CHANGELOG.md', 'w') as outfile:
+            outfile.write(''.join(changelog_lines))
 
       - name: Update citation file
+        shell: python {0}
         run: |
           from cffconvert.cli.create_citation import create_citation
           from cffconvert.cli.validate_or_write_output import validate_or_write_output
@@ -58,8 +62,20 @@ jobs:
           citation._implementation.cffobj['version'] = "${{ steps.semver.outputs.next }}"
           citation._implementation.cffobj['date-released'] = "${{ env.DATE }}"
           validate_or_write_output("CITATION.cff", 'cff', False, citation)
-        shell: python {0}
+
+      - name: Commit & push to branch
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git switch -c release/${{ steps.semver.outputs.next }}
+          git add CITATION.cff CHANGELOG.md
+          git commit -m 'chore: prepare release ${{ steps.semver.outputs.next }}' || echo "No changes to commit"
 
       - name: Tag & draft release
-        run: |
-          echo ${{ env.RELEASE_NOTES }}
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ steps.semver.outputs.next }}
+          release_name: ${{ github.event.repository.name }} ${{ steps.semver.outputs.next }}
+          draft: true
+          body_path: .github/latest-release.md
