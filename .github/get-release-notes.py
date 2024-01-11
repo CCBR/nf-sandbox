@@ -15,5 +15,5 @@ with open("CHANGELOG.md", "r") as infile:
           lines.append(line)
 release_notes = ''.join(lines)
 print(release_notes)
-#with open(os.getenv("GITHUB_ENV"), "a") as env_file:
-#    env_file.write(f"RELEASE_NOTES='f{release_notes}'")
+with open(os.getenv("GITHUB_ENV"), "a") as env_file:
+    env_file.write(f"RELEASE_NOTES='f{release_notes}'")

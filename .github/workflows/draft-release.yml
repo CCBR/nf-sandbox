@@ -30,8 +30,8 @@ jobs:
       - name: Update changelog
         run: |
           import os
-          latest_version = "${{ steps.semver.outputs.next }}".strip('v')
-          next_version = "${{ steps.semver.outputs.next }}"
+          latest_version = "${{ steps.semver.outputs.current }}".strip('v')
+          next_version = "${{ steps.semver.outputs.next }}".strip('v')
           lines = list()
           with open("CHANGELOG.md", "r") as infile:
             for line in infile:
@@ -42,8 +42,8 @@ jobs:
               else:
                 lines.append(line)
           release_notes = ''.join(lines)
-          with open(os.getenv("GITHUB_ENV"), "a") as env_file:
-            env_file.write(f"RELEASE_NOTES='f{release_notes}'")
+          with open(".github/latest-release.md", "w") as outfile:
+            outfile.write(release_notes)
         shell: python {0}
       - name: Update citation file
         run: |
