@@ -81,3 +81,6 @@ jobs:
           release_name: ${{ github.event.repository.name }} ${{ steps.semver.outputs.next }}
           draft: true
           body_path: .github/latest-release.md
+      - name: Next steps
+        run: |
+          echo "Next steps: \n - Take a look at the changes in `release/${{ steps.semver.outputs.next }}`\n - If everything is correct, publish the draft release"
