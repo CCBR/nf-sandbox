@@ -14,13 +14,11 @@ jobs:
         with:
           fetch-depth: 0 # required to include tags
       #- uses: actions/setup-python@v4
-      - name: Detect latest version
+      - name: Get Date
         run: |
           echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_ENV"
           echo "LATEST_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
-          echo TODO
-
-      - name: Get Next Version
+      - name: Get current and next versions
         id: semver
         uses: ietf-tools/semver-action@v1
         with:
@@ -32,7 +30,7 @@ jobs:
       - name: Update changelog
         run: |
           import os
-          latest_version = "${{ env.LATEST_VERSION }}".strip('v')
+          latest_version = "${{ steps.semver.outputs.next }}".strip('v')
           next_version = "${{ steps.semver.outputs.next }}"
           lines = list()
           with open("CHANGELOG.md", "r") as infile:
@@ -48,14 +46,13 @@ jobs:
           release_notes = ''.join(lines)
           with open(os.getenv("GITHUB_ENV"), "a") as env_file:
             env_file.write(f"RELEASE_NOTES='f{release_notes}'")
-
         shell: python {0}
-      - name: Update citation.cff
+      - name: Update citation file
         run: |
           echo TODO
       - name: Tag & draft release
         run: |
           echo ${{ env.RELEASE_NOTES }}
-      - name: Push to branch
+      - name: Commit & push to branch
         run: |
           echo TODO
