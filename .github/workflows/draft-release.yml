@@ -39,7 +39,7 @@ jobs:
                 break
               elif line.startswith('#') and 'development version' in line:
                 lines.append(line.replace('development version', next_version))
-              elif dev_header_detected:
+              else:
                 lines.append(line)
           release_notes = ''.join(lines)
           with open(os.getenv("GITHUB_ENV"), "a") as env_file:
