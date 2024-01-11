@@ -11,23 +11,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # required to include tags
       - uses: actions/setup-python@v4
       - name: Detect latest version
         run: |
           echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_ENV"
           echo "LATEST_VERSION=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"
           echo TODO
+
+      - name: Get Next Version
+        id: semver
+        uses: ietf-tools/semver-action@v1
+        with:
+          token: ${{ github.token }}
       - name: Select next version
         run: |
-          echo TODO
+          echo ${{ steps.semver.outputs.next }}
       - name: Update changelog
         run: |
           import os
-          print("${{ env.DOCKER_IMAGE_TAG }}")
-          print(os.getenv('GITHUB_ENV'))
+          latest_version = "${{ env.LATEST_VERSION }}".strip('v')
+          next_version = "${{ steps.semver.outputs.next }}"
           lines = list()
           with open("CHANGELOG.md", "r") as infile:
-            lines = infile.readlines()
+            if line.startswith('#') and 'development version' in line:
+              line.replace('development version', next_version)
+            for line in infile:
+              if latest_version in line:
+                break
+              elif line.startswith('#') and 'dev' in line:
+                dev_header_detected = True
+              elif dev_header_detected:
+                lines.append(line)
+          release_notes = ''.join(lines)
+          with open(os.getenv("GITHUB_ENV"), "a") as env_file:
+            env_file.write(f"RELEASE_NOTES='f{release_notes}'")
 
         shell: python {0}
       - name: Update citation.cff
@@ -35,7 +54,7 @@ jobs:
           echo TODO
       - name: Tag & draft release
         run: |
-          echo TODO
+          echo ${{ env.RELEASE_NOTES }}
       - name: Push to branch
         run: |
           echo TODO
