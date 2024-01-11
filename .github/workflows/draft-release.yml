@@ -34,13 +34,11 @@ jobs:
           next_version = "${{ steps.semver.outputs.next }}"
           lines = list()
           with open("CHANGELOG.md", "r") as infile:
-            if line.startswith('#') and 'development version' in line:
-              line.replace('development version', next_version)
             for line in infile:
               if latest_version in line:
                 break
-              elif line.startswith('#') and 'dev' in line:
-                dev_header_detected = True
+              elif line.startswith('#') and 'development version' in line:
+                lines.append(line.replace('development version', next_version))
               elif dev_header_detected:
                 lines.append(line)
           release_notes = ''.join(lines)
