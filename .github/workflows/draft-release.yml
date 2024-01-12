@@ -108,7 +108,8 @@ jobs:
           citation = create_citation('CITATION.cff', None)
           citation._implementation.cffobj['version'] = "${{ env.NEXT_VERSION }}"
           citation._implementation.cffobj['date-released'] = "${{ env.DATE }}"
-          validate_or_write_output("CITATION.cff", 'cff', False, citation)
+          with open('CITATION.cff', 'w') as outfile:
+            outfile.write(yaml.dump(citation._implementation.cffobj, sort_keys=False))
 
           with open("VERSION", "w") as outfile:
             outfile.write("${{ env.NEXT_STRICT }}")
