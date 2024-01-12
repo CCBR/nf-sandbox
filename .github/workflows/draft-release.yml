@@ -12,6 +12,9 @@ on:
     branches:
       - release-draft
 
+env:
+  GH_TOKEN: ${{ github.token }}
+  BRANCH: release-draft
 
 jobs:
   draft-release:
@@ -54,6 +57,8 @@ jobs:
 
           with open(os.getenv("GITHUB_ENV"), 'a') as out_env:
             out_env.write(f"NEXT_VERSION={next_version}")
+            next_strict = next_version.strip('v')
+            out_env.write(f"NEXT_STRICT={next_strict}"")
           current_version = "${{ steps.semver.outputs.current }}"
 
           # assert semantic version pattern
@@ -75,7 +80,8 @@ jobs:
         run: |
           import os
           latest_version = "${{ steps.semver.outputs.current }}".strip('v')
-          next_version = "${{ env.NEXT_VERSION }}".strip('v')
+          next_version = "${{ env.NEXT_STRICT }}"
+
           changelog_lines = list()
           next_release_lines = list()
           for_next = True
@@ -106,35 +112,31 @@ jobs:
           validate_or_write_output("CITATION.cff", 'cff', False, citation)
 
           with open("VERSION", "w") as outfile:
-            version_strict = '${{ env.NEXT_VERSION }}'.strip('v')
-            outfile.write(f"{version_strict}\n")
+            outfile.write("${{ env.NEXT_STRICT }}")
 
       - name: Commit & push to branch
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git push origin --delete release-draft || echo "No release-draft branch to delete"
-          git switch -c release-draft || git switch release-draft
+          git push origin --delete ${{ env.BRANCH }} || echo "No ${{ env.BRANCH }} branch to delete"
+          git switch -c ${{ env.BRANCH }} || git switch ${{ env.BRANCH }}
           git merge --ff-only ${{ github.ref_name }}
 
           git add CITATION.cff CHANGELOG.md VERSION
           git commit -m 'chore: prepare release ${{ env.NEXT_VERSION }}'
-          git push --set-upstream origin release-draft
+          git push --set-upstream origin ${{ env.BRANCH }}
 
           echo "COMMIT_HASH=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
       - name: Tag & draft release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ env.NEXT_VERSION }}
-          release_name: ${{ github.event.repository.name }} ${{ env.NEXT_VERSION }}
-          commitish: ${{ env.COMMIT_HASH }}
-          draft: true
-          body_path: .github/latest-release.md
+        run: |
+          gh release create ${{ env.NEXT_VERSION }} \
+            --draft \
+            --notes-file .github/latest-release.md \
+            --target ${{ env.COMMIT_HASH }} \
+            --title "${{ github.event.repository.name }} ${{ env.NEXT_STRICT }}"
 
       - name: Next steps
         run: |
-          echo "Next steps: Take a look at the changes in the release-draft branch and the release notes on the web. If everything is correct, publish the release. Otherwise, delete the release draft and cut the release manually."
+          echo "Next steps: Take a look at the changes in the ${{ env.BRANCH }} branch and the release notes on the web. If everything is correct, publish the release. Otherwise, delete the release draft and cut the release manually."

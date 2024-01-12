@@ -27,7 +27,7 @@ jobs:
         run: |
           with open("CHANGELOG.md", "r") as infile:
             lines = infile.readlines()
-          lines.insert(0, "## development version\n\n")
+          lines.insert(0, "## ${{ github.event.repository.name }} development version\n\n")
           with open("CHANGELOG.md", "w") as outfile:
             outfile.writelines(lines)
 
