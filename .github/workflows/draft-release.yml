@@ -43,10 +43,15 @@ jobs:
         run: |
           import os
           import re
+          import warnings
+
+          convco_version = "${{ steps.semver.outputs.next }}"
           if "${{ github.event_name }}" == 'workflow_dispatch' and "${{ github.event.inputs.version_tag }}":
             next_version = "${{ github.event.inputs.version_tag }}"
+            if next_version != convco_version:
+              warnings.warn("Manual version ({next_version}) not equal to version determined by conventional commit history ({convco_version})")
           else:
-            next_version = "${{ steps.semver.outputs.next }}"
+            next_version = convco_version
 
           with open(os.getenv("GITHUB_ENV"), 'a') as out_env:
             out_env.write(f"NEXT_VERSION={next_version}")
