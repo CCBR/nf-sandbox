@@ -110,6 +110,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
+          git push origin --delete release-draft || echo "No release-draft branch to delete"
           git switch -c release-draft || git switch release-draft
           git merge --ff-only ${{ github.ref_name }}
 

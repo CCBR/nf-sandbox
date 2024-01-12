@@ -33,10 +33,15 @@ jobs:
         run: |
           git add CHANGELOG.md VERSION
           git commit -m "chore: bump changelog & version after release of ${{ github.ref_name }}"
+          git push --set-upstream origin release/${{ github.ref_name }}
 
           gh pr create \
             --base main \
-            --fill
+            --head release/${{ github.ref_name }} \
+            --fill-first
 
+      - name: Clean up release-draft branch
+        run: |
+          git push origin --delete release-draft || echo "No release-draft branch to delete"
 
 
