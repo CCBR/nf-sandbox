@@ -27,7 +27,7 @@ jobs:
         with:
           python-version: '3.11'
           cache: 'pip'
-      - run: pip install cffconvert>=2.0.0
+      - run: pip install cffconvert>=2.0.0 pyyaml
 
       - name: Get Date
         run: |
