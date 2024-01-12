@@ -137,4 +137,4 @@ jobs:
           body_path: .github/latest-release.md
       - name: Next steps
         run: |
-          echo "Next steps: Take a look at the changes and the release notes. If everything is correct, publish the release. Otherwise, delete the tag and release and do it manually."
+          echo "Next steps: Take a look at the changes in the release-draft branch and the release notes on the web. If everything is correct, publish the release. Otherwise, delete the release & tag and do it manually."
