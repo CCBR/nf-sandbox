@@ -25,6 +25,7 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
       - run: pip install cffconvert>=2.0.0
+
       - name: Get Date
         run: |
           echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_ENV"
@@ -133,6 +134,7 @@ jobs:
           commitish: ${{ env.COMMIT_HASH }}
           draft: true
           body_path: .github/latest-release.md
+
       - name: Next steps
         run: |
-          echo "Next steps: Take a look at the changes in the release-draft branch and the release notes on the web. If everything is correct, publish the release. Otherwise, delete the release & tag and do it manually."
+          echo "Next steps: Take a look at the changes in the release-draft branch and the release notes on the web. If everything is correct, publish the release. Otherwise, delete the release & tag and cut the release manually."
