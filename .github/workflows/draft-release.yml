@@ -9,10 +9,8 @@ on:
         type: string
         default: ''
   push:
-    paths:
-      - .github/workflows/draft-release.yml
     branches:
-      - release-action
+      - release-draft
 
 
 jobs:
