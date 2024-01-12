@@ -1,16 +1,20 @@
-# ccbr/sandbox: Changelog
+## development version
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## TOOL_NAME development version
 
-## v1.0dev - [date]
+### API-breaking changes
 
-Initial release of ccbr/sandbox, created with the [nf-core](https://nf-co.re/) template.
+- change 1
+- example 2
 
-### `Added`
+### New features
 
-### `Fixed`
+- new feat 1
 
-### `Dependencies`
+### Bug fixes
 
-### `Deprecated`
+- description of bug fixed
+
+## TOOL_NAME v0.1.0
+
+This is the first release of TOOL_NAME 🎉
