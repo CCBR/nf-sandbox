@@ -2,9 +2,16 @@ name: draft-release
 
 on:
   workflow_dispatch:
+    inputs:
+      version_tag:
+        description: Semantic version tag for next release. If not provided, it will be determined based on conventional commmit history.
+        required: false
+        type: string
+        default: ''
   push:
     paths:
       - .github/workflows/draft-release.yml
+
 
 jobs:
   draft-release:
@@ -21,6 +28,7 @@ jobs:
       - name: Get Date
         run: |
           echo "DATE=$(date +"%Y-%m-%d")" >> "$GITHUB_ENV"
+
       - name: Get current and next versions
         id: semver
         uses: ietf-tools/semver-action@v1
@@ -28,12 +36,41 @@ jobs:
           token: ${{ github.token }}
           branch: ${{ github.ref_name }}
 
+      - name: Set version variables
+        shell: python {0}
+        run: |
+          import os
+          import re
+          if "${{ github.event_name }}" == 'workflow_dispatch' and "${{ github.event.inputs.version_tag }}":
+            next_version = "${{ github.event.inputs.version_tag }}"
+          else:
+            next_version = "${{ steps.semver.outputs.next }}"
+
+          with open(os.get_env("GITHUB_ENV"), 'a') as out_env:
+            out_env.write(f"NEXT_VERSION={next_version}")
+          current_version = "${{ steps.semver.outputs.current }}"
+
+          # assert semantic version pattern
+          semver_pattern = 'v(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?'
+          next_semver = re.match(semver_pattern, next_version)
+          if not next_semver:
+            raise ValueError(f"Tag {next_version} does not match semantic versioning guidelines")
+
+          # assert next version is only 1 greater than current
+          current_semver = re.match(semver_pattern, current_version)
+          groups = ['major', 'minor', 'patch']
+          greater = sum([next_semver.group(grp) > current_semver.group(grp) for grp in groups])
+          equal = sum([next_semver.group(grp) == current_semver.group(grp) for grp in groups])
+          if not (greater == 1 and equal == 2):
+            raise ValueError(f"Next version must only increment one number at a time. Current version: {current_version}. Proposed next version: {next_version}")
+
+
       - name: Get release notes & update changelog
         shell: python {0}
         run: |
           import os
           latest_version = "${{ steps.semver.outputs.current }}".strip('v')
-          next_version = "${{ steps.semver.outputs.next }}".strip('v')
+          next_version = "${{ env.NEXT_VERSION }}".strip('v')
           changelog_lines = list()
           next_release_lines = list()
           for_next = True
@@ -59,12 +96,13 @@ jobs:
           from cffconvert.cli.create_citation import create_citation
           from cffconvert.cli.validate_or_write_output import validate_or_write_output
           citation = create_citation('CITATION.cff', None)
-          citation._implementation.cffobj['version'] = "${{ steps.semver.outputs.next }}"
+          citation._implementation.cffobj['version'] = "${{ env.NEXT_VERSION }}"
           citation._implementation.cffobj['date-released'] = "${{ env.DATE }}"
           validate_or_write_output("CITATION.cff", 'cff', False, citation)
 
           with open("VERSION", "w") as outfile:
-            outfile.write("${{ steps.semver.outputs.nextStrict }}\n")
+            version_strict = '${{ env.NEXT_VERSION }}'.strip('v')
+            outfile.write(f"{version_strict}\n")
 
       - name: Commit & push to branch
         run: |
@@ -75,7 +113,7 @@ jobs:
           git merge --ff-only ${{ github.ref_name }}
 
           git add CITATION.cff CHANGELOG.md
-          git commit -m 'chore: prepare release ${{ steps.semver.outputs.next }}'
+          git commit -m 'chore: prepare release ${{ env.NEXT_VERSION }}'
           git push --set-upstream origin release-draft
 
       - name: Tag & draft release
@@ -83,10 +121,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.semver.outputs.next }}
-          release_name: ${{ github.event.repository.name }} ${{ steps.semver.outputs.next }}
+          tag_name: ${{ env.NEXT_VERSION }}
+          release_name: ${{ github.event.repository.name }} ${{ env.NEXT_VERSION }}
           draft: true
           body_path: .github/latest-release.md
       - name: Next steps
         run: |
-          echo "Next steps: Take a look at the changes and the release notes. If everything is correct, publish the release."
+          echo "Next steps: Take a look at the changes and the release notes. If everything is correct, publish the release. Otherwise, delete the tag and release and do it manually."
