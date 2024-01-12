@@ -13,12 +13,12 @@
 
 - description of bug fixed
 
-## TOOL_NAME v0.2.0
+## TOOL_NAME 0.2.0
 
 experiment with nektool + github actions
 
 test post-release action
 
-## TOOL_NAME v0.1.0
+## TOOL_NAME 0.1.0
 
 This is the first release of TOOL_NAME 🎉
