@@ -46,7 +46,7 @@ jobs:
           else:
             next_version = "${{ steps.semver.outputs.next }}"
 
-          with open(os.get_env("GITHUB_ENV"), 'a') as out_env:
+          with open(os.getenv("GITHUB_ENV"), 'a') as out_env:
             out_env.write(f"NEXT_VERSION={next_version}")
           current_version = "${{ steps.semver.outputs.current }}"
 
