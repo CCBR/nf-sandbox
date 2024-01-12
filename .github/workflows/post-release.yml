@@ -40,11 +40,7 @@ jobs:
           git commit -m "chore: bump changelog & version after release of ${{ github.ref_name }}"
           git push --set-upstream origin ${{ env.BRANCH }}
 
-          default_branch=$(git remote show origin  | sed -n '/HEAD branch/s/.*: //p')
-
           gh pr create \
-            --base master \
-            --head ${{ env.BRANCH }} \
             --fill-first
 
       - name: Clean up release-draft branch
