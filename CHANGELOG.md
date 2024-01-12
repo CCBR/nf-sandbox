@@ -17,6 +17,8 @@
 
 experiment with nektool + github actions
 
+test post-release action
+
 ## TOOL_NAME v0.1.0
 
 This is the first release of TOOL_NAME 🎉
