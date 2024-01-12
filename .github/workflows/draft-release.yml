@@ -48,7 +48,7 @@ jobs:
           if "${{ github.event_name }}" == 'workflow_dispatch' and "${{ github.event.inputs.version_tag }}":
             next_version = "${{ github.event.inputs.version_tag }}"
             if next_version != convco_version:
-              warnings.warn("Manual version ({next_version}) not equal to version determined by conventional commit history ({convco_version})")
+              warnings.warn(f"Manual version ({next_version}) not equal to version determined by conventional commit history ({convco_version})")
           else:
             next_version = convco_version
 
