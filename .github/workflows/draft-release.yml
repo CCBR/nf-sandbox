@@ -57,8 +57,7 @@ jobs:
 
           with open(os.getenv("GITHUB_ENV"), 'a') as out_env:
             out_env.write(f"NEXT_VERSION={next_version}")
-            next_strict = next_version.strip('v')
-            out_env.write(f"NEXT_STRICT={next_strict}"")
+            out_env.write(f"NEXT_STRICT={next_version.strip('v')}")
           current_version = "${{ steps.semver.outputs.current }}"
 
           # assert semantic version pattern
