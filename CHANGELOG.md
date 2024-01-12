@@ -1,4 +1,4 @@
-## TOOL_NAME development version
+## TOOL_NAME 0.2.1
 
 ### API-breaking changes
 
