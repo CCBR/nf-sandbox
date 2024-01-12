@@ -1,5 +1,3 @@
-## development version
-
 ## TOOL_NAME development version
 
 ### API-breaking changes
@@ -14,6 +12,10 @@
 ### Bug fixes
 
 - description of bug fixed
+
+## TOOL_NAME v0.2.0
+
+experiment with nektool + github actions
 
 ## TOOL_NAME v0.1.0
 
