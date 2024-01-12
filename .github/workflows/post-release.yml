@@ -7,6 +7,7 @@ on:
 
 env:
   GH_TOKEN: ${{ github.token }}
+  BRANCH: release/${{ github.ref_name }}
 
 jobs:
   cleanup:
@@ -17,7 +18,8 @@ jobs:
         run: |
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git switch -c release/${{ github.ref_name }}
+          git push origin --delete ${{ env.BRANCH }} || echo "No ${{ env.BRANCH }} branch to delete"
+          git switch -c ${{ env.BRANCH }}
       - name: Bump changelog & version
         shell: python {0}
         run: |
@@ -36,11 +38,11 @@ jobs:
         run: |
           git add CHANGELOG.md VERSION
           git commit -m "chore: bump changelog & version after release of ${{ github.ref_name }}"
-          git push --set-upstream origin release/${{ github.ref_name }}
+          git push --set-upstream origin ${{ env.BRANCH }}
 
           gh pr create \
-            --base main \
-            --head release/${{ github.ref_name }} \
+            --base "$(git remote show origin  | sed -n '/HEAD branch/s/.*: //p')" \
+            --head ${{ env.BRANCH }} \
             --fill-first
 
       - name: Clean up release-draft branch
