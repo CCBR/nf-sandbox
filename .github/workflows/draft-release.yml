@@ -117,7 +117,7 @@ jobs:
           git commit -m 'chore: prepare release ${{ env.NEXT_VERSION }}'
           git push --set-upstream origin release-draft
 
-          echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> "$GITHUB_ENV"
+          echo "COMMIT_HASH=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
       - name: Tag & draft release
         uses: actions/create-release@v1
