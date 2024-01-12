@@ -20,7 +20,7 @@ jobs:
         run: |
           with open("CHANGELOG.md", "r") as infile:
             lines = infile.readlines()
-          lines.prepend("## development version\n")
+          lines.insert(0, "## development version\n")
           with open("CHANGELOG.md", "w") as outfile:
             outfile.writelines(lines)
 
