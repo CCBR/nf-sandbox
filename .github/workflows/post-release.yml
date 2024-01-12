@@ -25,7 +25,7 @@ jobs:
         run: |
           with open("CHANGELOG.md", "r") as infile:
             lines = infile.readlines()
-          lines.insert(0, "## development version\n")
+          lines.insert(0, "## development version\n\n")
           with open("CHANGELOG.md", "w") as outfile:
             outfile.writelines(lines)
 
@@ -40,8 +40,10 @@ jobs:
           git commit -m "chore: bump changelog & version after release of ${{ github.ref_name }}"
           git push --set-upstream origin ${{ env.BRANCH }}
 
+          default_branch=$(git remote show origin  | sed -n '/HEAD branch/s/.*: //p')
+
           gh pr create \
-            --base "$(git remote show origin  | sed -n '/HEAD branch/s/.*: //p')" \
+            --base master \
             --head ${{ env.BRANCH }} \
             --fill-first
 
