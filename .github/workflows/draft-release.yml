@@ -4,13 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       version_tag:
-        description: Semantic version tag for next release. If not provided, it will be determined based on conventional commmit history.
+        description: Semantic version tag for next release. If not provided, it will be determined based on conventional commit history.
         required: false
         type: string
-        default: ''
-  push:
-    branches:
-      - release-draft
+        default: ""
 
 env:
   GH_TOKEN: ${{ github.token }}
@@ -25,8 +22,8 @@ jobs:
           fetch-depth: 0 # required to include tags
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
-          cache: 'pip'
+          python-version: "3.11"
+          cache: "pip"
       - run: pip install cffconvert>=2.0.0 pyyaml
 
       - name: Get Date
@@ -70,8 +67,7 @@ jobs:
           current_semver = re.match(semver_pattern, current_version)
           groups = ['major', 'minor', 'patch']
           greater = sum([next_semver.group(grp) > current_semver.group(grp) for grp in groups])
-          equal = sum([next_semver.group(grp) == current_semver.group(grp) for grp in groups])
-          if not (greater == 1 and equal == 2):
+          if not (greater == 1):
             raise ValueError(f"Next version must only increment one number at a time. Current version: {current_version}. Proposed next version: {next_version}")
 
       - name: Get release notes, update changelog & version file
@@ -92,7 +88,7 @@ jobs:
                 for_next = False
 
               changelog_lines.append(line)
-              if for_next:
+              if for_next and next_version not in line:
                 next_release_lines.append(line)
 
           with open(".github/latest-release.md", "w") as outfile:
