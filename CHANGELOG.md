@@ -1,6 +1,4 @@
-## nf-sandbox development version
-
-## TOOL_NAME 0.2.1
+## TOOL_NAME development version
 
 ### API-breaking changes
 
