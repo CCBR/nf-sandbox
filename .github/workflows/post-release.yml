@@ -42,9 +42,9 @@ jobs:
           git commit -m "chore: bump changelog & version after release of ${{ github.ref_name }}"
           git push --set-upstream origin ${{ env.BRANCH }}
 
+          echo ${{ github.actor }} ${{ github.triggering_actor }} ${{ github.event.release.author.login }}
           gh pr create \
-            --fill-first \
-            --reviewer ${{ github.event.release.author.login }}
+            --fill-first
 
       - name: Clean up release-draft branch
         run: |
