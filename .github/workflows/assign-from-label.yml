@@ -21,6 +21,6 @@ jobs:
           config: .github/assets/user-labels.yml
 
       - name: assign
-        if: ${{ steps.metadata.outputs[github.event.label.name] }} != ''
+        if: ${{ steps.metadata.outputs[github.event.label.name]  != '' }}
         run: |
-          gh issue edit ${{ github.event.number }} --add-assignee ${{ steps.metadata.outputs[github.event.label.name] }}
+          gh issue edit ${{ github.event.issue.number }} --add-assignee ${{ steps.metadata.outputs[github.event.label.name] }}
