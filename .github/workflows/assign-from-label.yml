@@ -23,7 +23,7 @@ jobs:
           echo ${{ github.event.label.name }}
           echo ${{ steps.metadata.outputs[github.event.label.name] }}
           echo ${{ steps.metadata.outputs['POC: Phil'] }}
-          echo $(PWD)
+          echo $(pwd)
       - name: assign
         if: ${{ steps.metadata.outputs[github.event.label.name] }} != ''
         run: |
