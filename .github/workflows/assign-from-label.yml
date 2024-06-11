@@ -1,4 +1,6 @@
 name: assign-from-label
+run-name: ${{ github.event.label.name }}
+
 on:
   issues:
     types:
@@ -21,6 +23,7 @@ jobs:
           echo ${{ github.event.label.name }}
           echo ${{ steps.metadata.outputs[github.event.label.name] }}
           echo ${{ steps.metadata.outputs['POC: Phil'] }}
+          echo $(PWD)
       - name: assign
         if: ${{ steps.metadata.outputs[github.event.label.name] }} != ''
         run: |
