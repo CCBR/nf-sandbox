@@ -9,6 +9,9 @@ on:
     types:
       - labeled
 
+env:
+  GH_TOKEN: ${{ github.token }}
+
 jobs:
   assign-from-label:
     runs-on: ubuntu-latest
