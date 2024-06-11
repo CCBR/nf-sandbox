@@ -1,0 +1,22 @@
+name: assign-from-label
+on:
+  issues:
+    types:
+      - labeled
+  pull_request:
+    types:
+      - labeled
+
+jobs:
+  assign-from-label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: pietrobolcato/action-read-yaml@1.1.0
+        id: metadata
+        with:
+          config: .github/assets/user-labels.yml
+
+      - name: echo
+        run: |
+          echo ${{ github.event.issue.label }}
+          echo ${{ steps.metadata.outputs[github.event.label] }}
