@@ -14,18 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: pietrobolcato/action-read-yaml@1.1.0
         id: metadata
         with:
           config: .github/assets/user-labels.yml
 
-      - name: echo
-        run: |
-          echo ${{ github.event.label.name }}
-          echo ${{ steps.metadata.outputs[github.event.label.name] }}
-          echo ${{ steps.metadata.outputs['POC: Phil'] }}
-          echo $(pwd)
       - name: assign
         if: ${{ steps.metadata.outputs[github.event.label.name] }} != ''
         run: |
-          echo "will assign user ${{ steps.metadata.outputs[github.event.label.name] }}"
+          gh issue edit ${{ github.event.number }} --add-assignee ${{ steps.metadata.outputs[github.event.label.name] }}
