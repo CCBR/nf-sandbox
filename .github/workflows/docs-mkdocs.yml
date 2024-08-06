@@ -1,0 +1,52 @@
+name: docs
+on:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**"
+      - "**.md"
+      - .github/workflows/docs.yml
+      - mkdocs.yml
+
+env:
+  actor: "41898282+github-actions[bot]"
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+          cache: pip
+      - run: |
+          pip install \
+            git+https://github.com/CCBR/actions.git@versions \
+            mkdocs \
+            mike \
+            --upgrade pip
+      - name: git config
+        run: |
+          git config --local user.email "${actor}@users.noreply.github.com"
+          git config --local user.name "$actor"
+      - name: get version tag & alias
+        shell: python {0}
+        run: |
+          from ccbr_actions.versions import set_docs_version
+          set_docs_version()
+
+      - name: deploy docs
+        run: |
+          mike deploy ${{ env.VERSION }} ${{ env.ALIAS }} \
+            --push \
+            --update-aliases \
+            --branch gh-pages
