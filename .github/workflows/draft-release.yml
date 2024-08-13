@@ -11,8 +11,6 @@ on:
         required: false
         type: string
         default: ""
-      draft-branch:
-        default: "release-draft"
 
 jobs:
   draft-release:
@@ -24,8 +22,9 @@ jobs:
       - uses: CCBR/actions/draft-release@action-release
         with:
           github-token: ${{ github.token }}
-          draft-branch: ${{ github.event.inputs.draft-branch }}
           version-tag: ${{ github.event.inputs.version-tag }}
+          ccbr-actions-version: action-release
+          draft-branch: 'release-draft'
           version-filepath: VERSION
           changelog-filepath: CHANGELOG.md
           citation-filepath: CITATION.cff
