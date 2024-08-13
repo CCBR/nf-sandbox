@@ -23,4 +23,4 @@ jobs:
       - uses: CCBR/actions/mkdocs-mike@main
         with:
           github-token: ${{ github.token }}
-          ccbr-actions-version: "versions"
+          ccbr-actions-version: "main"
