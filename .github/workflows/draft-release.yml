@@ -12,7 +12,7 @@ on:
         type: string
         default: ""
       draft-branch:
-        default: release-draft
+        default: "release-draft"
 
 jobs:
   draft-release:
