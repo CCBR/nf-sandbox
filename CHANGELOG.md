@@ -1,4 +1,6 @@
-## TOOL_NAME development version
+## nf-sandbox development version
+
+## TOOL_NAME 0.2.2
 
 test new draft & post release actions
 
