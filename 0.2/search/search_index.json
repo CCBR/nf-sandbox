@@ -1,0 +1,1 @@
+{"config":{"lang":["en"],"separator":"[\\s\\-]+","pipeline":["stopWordFilter"]},"docs":[{"location":"intro/","title":"example docs file","text":"<p>this is where documentation would go</p>"}]}
