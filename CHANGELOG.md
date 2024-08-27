@@ -1,5 +1,7 @@
 ## nf-sandbox development version
 
+test new sliding branch feature in post-release action
+
 ## TOOL_NAME 0.2.2
 
 test new draft & post release actions

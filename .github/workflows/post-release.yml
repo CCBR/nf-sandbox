@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: CCBR/actions/post-release@action-release
+      - uses: CCBR/actions/post-release@post-release
         with:
           github-token: ${{ github.token }}
-          ccbr-actions-version: action-release
+          ccbr-actions-version: post-release
