@@ -10,6 +10,8 @@ on:
 
 jobs:
   add-label:
-    uses: CCBR/actions/label-issue-repo-name@vishal-actions
-    with:
-      github-token: ${{ github.token }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: CCBR/actions/label-issue-repo-name@vishal-actions
+        with:
+          github-token: ${{ github.token }}
