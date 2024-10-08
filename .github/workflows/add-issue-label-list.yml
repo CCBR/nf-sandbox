@@ -1,7 +1,7 @@
 name: add-issue-label-list
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       issue-num:
         required: true
