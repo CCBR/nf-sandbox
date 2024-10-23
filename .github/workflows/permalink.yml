@@ -1,0 +1,21 @@
+on:
+  workflow_dispatch:
+    inputs:
+      filepath:
+        type: string
+        description: relative path to file in the repository
+        default: README.md
+        required: true
+
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: get permalink
+        run: |
+          permalink="https://github.com/${{ github.repository }}/blob/${{ github.sha }}/${{ inputs.filepath }}"
+          [ -f ${{ inputs.filepath }} ] && echo ${permalink} || echo "ERROR: file not found: ${{ inputs.filepath }}"
+          
+    
