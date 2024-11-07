@@ -25,6 +25,7 @@ jobs:
     outputs:
       json: ${{ steps.changed-files.outputs.matched_files_json }}
       files: ${{ steps.changed-files.outputs.matched_files}}
+      mtx: ${{ steps.matrix.outputs.mtx }}
     steps:
       - name: Checkout repository
         id: checkout
@@ -36,6 +37,7 @@ jobs:
           paths: |
             **/Dockerfile.*
       - name: Show changed files
+        id: matrix
         run: |
           echo "matched files:"
           echo "${{ steps.changed-files.outputs.matched_files }}" | sed 's/^/  /'
@@ -45,12 +47,14 @@ jobs:
           echo "${{ steps.changed-files.outputs.changed_files }}" | sed 's/^/  /'
           echo "changed JSON:"
           echo "${{ steps.changed-files.outputs.changed_files_json }}"
+          echo "::set-output name=dockerfile::${{ steps.changed-files.outputs.matched_files_json }}"
+
 
   build-docker-auto:
     needs: [get-files]
     strategy:
-      matrix: ${{ fromJson(needs.get-files.outputs.json) }}
-    if: ${{ fromJson(needs.get-files.outputs.json) != '' && fromJson(needs.get-files.outputs.json) != '' }}
+      matrix: ${{ fromJson(needs.get-files.outputs.mtx) }}
+    if: ${{ fromJson(needs.get-files.outputs.mtx) != '' && fromJson(needs.get-files.outputs.mtx) != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -58,4 +62,4 @@ jobs:
         uses: actions/checkout@v4
       - name: list changed json
         run: |
-          echo ${{ matrix }}
+          echo ${{ matrix.dockerfile }}
