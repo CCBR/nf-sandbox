@@ -37,10 +37,14 @@ jobs:
             **/Dockerfile.*
       - name: Show changed files
         run: |
-          echo "Matched files:"
+          echo "matched files:"
           echo "${{ steps.changed-files.outputs.matched_files }}" | sed 's/^/  /'
-          echo "Matched JSON"
+          echo "matched JSON:"
           echo "${{ steps.changed-files.outputs.matched_json }}"
+          echo "changed files:"
+          echo "${{ steps.changed-files.outputs.changed_files }}" | sed 's/^/  /'
+          echo "changed JSON:"
+          echo "${{ steps.changed-files.outputs.changed_json }}"
 
   build-docker-auto:
     needs: [get-files]
