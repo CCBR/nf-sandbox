@@ -43,10 +43,6 @@ jobs:
           echo "${{ steps.changed-files.outputs.matched_files }}" | sed 's/^/  /'
           echo "matched JSON:"
           echo "${{ steps.changed-files.outputs.matched_files_json }}"
-          echo "changed files:"
-          echo "${{ steps.changed-files.outputs.changed_files }}" | sed 's/^/  /'
-          echo "changed JSON:"
-          echo "${{ steps.changed-files.outputs.changed_files_json }}"
           echo "mtx={\"files\":${{ steps.changed-files.outputs.matched_files_json }}}" >> $GITHUB_OUTPUT
       - name: echo
         run: |
@@ -57,7 +53,7 @@ jobs:
     strategy:
       matrix:
         files: '${{ fromJson(needs.get-files.outputs.json) }}'
-    #if: ${{ fromJson(needs.get-files.outputs.mtx) != '[]' && fromJson(needs.get-files.outputs.mtx) != '' }}
+    if: "${{ fromJson(needs.get-files.outputs.mtx) != '[]' && fromJson(needs.get-files.outputs.mtx) != '' }}"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
