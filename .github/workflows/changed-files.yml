@@ -29,7 +29,6 @@ jobs:
       - name: Checkout repository
         id: checkout
         uses: actions/checkout@v4
-
       - id: changed-files
         name: Check changed files
         uses: knu/changed-files@v1
