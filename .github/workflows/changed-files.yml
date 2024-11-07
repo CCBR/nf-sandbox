@@ -47,7 +47,7 @@ jobs:
           echo "${{ steps.changed-files.outputs.changed_files }}" | sed 's/^/  /'
           echo "changed JSON:"
           echo "${{ steps.changed-files.outputs.changed_files_json }}"
-          echo "mtx=\{\"files\":${{ steps.changed-files.outputs.matched_files_json }}\}" >> $GITHUB_OUTPUT
+          echo "mtx={\"files\":${{ steps.changed-files.outputs.matched_files_json }}}" >> $GITHUB_OUTPUT
       - name: echo
         run: |
           echo "${{ steps.matrix.outputs.mtx }}"
