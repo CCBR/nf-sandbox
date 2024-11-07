@@ -40,11 +40,11 @@ jobs:
           echo "matched files:"
           echo "${{ steps.changed-files.outputs.matched_files }}" | sed 's/^/  /'
           echo "matched JSON:"
-          echo "${{ steps.changed-files.outputs.matched_json }}"
+          echo "${{ steps.changed-files.outputs.matched_files_json }}"
           echo "changed files:"
           echo "${{ steps.changed-files.outputs.changed_files }}" | sed 's/^/  /'
           echo "changed JSON:"
-          echo "${{ steps.changed-files.outputs.changed_json }}"
+          echo "${{ steps.changed-files.outputs.changed_files_json }}"
 
   build-docker-auto:
     needs: [get-files]
