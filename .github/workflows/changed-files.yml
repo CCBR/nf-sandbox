@@ -24,8 +24,6 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       json: ${{ steps.changed-files.outputs.matched_files_json }}
-      files: ${{ steps.changed-files.outputs.matched_files}}
-      mtx: ${{ steps.matrix.outputs.mtx }}
     steps:
       - name: Checkout repository
         id: checkout
@@ -41,19 +39,12 @@ jobs:
         run: |
           echo "matched files:"
           echo "${{ steps.changed-files.outputs.matched_files }}" | sed 's/^/  /'
-          echo "matched JSON:"
-          echo "${{ steps.changed-files.outputs.matched_files_json }}"
-          echo "mtx={\"files\":${{ steps.changed-files.outputs.matched_files_json }}}" >> $GITHUB_OUTPUT
-      - name: echo
-        run: |
-          echo "${{ steps.matrix.outputs.mtx }}"
 
-  build-docker-auto:
+  build-docker:
     needs: [get-files]
     strategy:
       matrix:
         files: '${{ fromJson(needs.get-files.outputs.json) }}'
-    if: "${{ fromJson(needs.get-files.outputs.mtx) != '[]' && fromJson(needs.get-files.outputs.mtx) != '' }}"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
