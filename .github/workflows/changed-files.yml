@@ -25,7 +25,7 @@ jobs:
     outputs:
       json: ${{ steps.changed-files.outputs.matched_files_json }}
       files: ${{ steps.changed-files.outputs.matched_files}}
-      mtx: ${{ steps.matrix.outputs.files }}
+      mtx: ${{ steps.matrix.outputs.mtx }}
     steps:
       - name: Checkout repository
         id: checkout
@@ -47,8 +47,10 @@ jobs:
           echo "${{ steps.changed-files.outputs.changed_files }}" | sed 's/^/  /'
           echo "changed JSON:"
           echo "${{ steps.changed-files.outputs.changed_files_json }}"
-          echo "files=${{ steps.changed-files.outputs.matched_files_json }}" >> $GITHUB_OUTPUT
-
+          echo "mtx=\{\"files\":${{ steps.changed-files.outputs.matched_files_json }}\}" >> $GITHUB_OUTPUT
+      - name: echo
+        run: |
+          echo "${{ steps.matrix.outputs.mtx }}"
 
   build-docker-auto:
     needs: [get-files]
