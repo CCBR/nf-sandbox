@@ -55,8 +55,9 @@ jobs:
   build-docker-auto:
     needs: [get-files]
     strategy:
-      matrix: '${{ fromJson(needs.get-files.outputs.mtx) }}'
-    if: ${{ fromJson(needs.get-files.outputs.mtx) != '[]' && fromJson(needs.get-files.outputs.mtx) != '' }}
+      matrix:
+        files: '${{ fromJson(needs.get-files.outputs.json) }}'
+    #if: ${{ fromJson(needs.get-files.outputs.mtx) != '[]' && fromJson(needs.get-files.outputs.mtx) != '' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
