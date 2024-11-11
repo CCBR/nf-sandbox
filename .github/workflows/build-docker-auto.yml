@@ -140,9 +140,13 @@ jobs:
           echo $SCRIPT
           cp $SCRIPT ${{ github.workspace }}
 
-          json_src=$(python -c 'import ccbr_actions.data; print(ccbr_actions.data.get_file_path("tool_version_commands.json"))')
-          cp $json_src ${{ github.workspace }}
-          JSON=tool_version_commands.json
+          if [ -f scripts/tool.json ]; then
+            JSON=scripts/tool.json
+          else
+            json_src=$(python -c 'import ccbr_actions.data; print(ccbr_actions.data.get_file_path("tool_version_commands.json"))')
+            cp $json_src ${{ github.workspace }}
+            JSON=tool_version_commands.json
+          fi
 
           echo $JSON
 
