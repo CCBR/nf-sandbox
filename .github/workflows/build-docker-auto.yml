@@ -149,6 +149,11 @@ jobs:
           docker run --rm -v "${{ github.workspace }}:/ws" ${{ env.IMAGENAME }} \
             python3 /ws/print_versions.py --json /ws/${JSON} --output /ws/${{ env.MDFILE }}
 
+      - name: upload readme file on failure
+        uses: actions/upload-artifact@v4
+        if: success() || failure()
+        with:
+          path: ${{ env.MDFILE }}
 
   # build-docker2:
   #   needs: [get-files]
