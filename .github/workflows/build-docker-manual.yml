@@ -57,7 +57,7 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - uses: CCBR/actions/build-docker@main
+      - uses: CCBR/actions/build-docker@fix-push-perm
         with:
           dockerfile: ${{ github.event.inputs.dockerfile }}
           dockerhub-namespace: ${{ github.event.inputs.dockerhub-namespace }}
