@@ -136,6 +136,8 @@ jobs:
         shell: bash
         id: run_script_in_container
         run: |
+          set -euo pipefail
+
           SCRIPT=$(which print_versions.py)
           echo $SCRIPT
           cp $SCRIPT ${{ github.workspace }}
