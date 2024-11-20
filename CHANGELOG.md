@@ -1,5 +1,7 @@
 ## nf-sandbox development version
 
+test optional citation feature in release actions
+
 ## nf-sandbox 0.3.0
 
 test new sliding branch feature in post-release action
