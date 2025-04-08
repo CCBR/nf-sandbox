@@ -9,7 +9,9 @@ on:
     secrets:
       ADD_TO_PROJECT_PAT:
         required: true
-
+permissions:
+  issues: read
+  pull-requests: read
 jobs:
   add-to-project:
     runs-on: ubuntu-latest
